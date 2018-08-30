@@ -1,6 +1,7 @@
 import os
 #json으로 바꾸기 위해 라이브러리 추가
 import json
+import random
 from flask import Flask, request,jsonify
 
 app=Flask(__name__)
@@ -28,9 +29,21 @@ def message():
     # content라는 key의 value를 msg에 저장
     msg = request.json['content']
     
+    if msg == "메뉴":
+        menu = ["A코스", "B코스", "멀캠 20층"]
+        return_msg = random.choice(menu)
+    elif msg == "로또":
+        lotto = random.sample(range(1,46),6)
+        return_msg = "행운의 번호 : " + json.dumps(sorted(lotto))
+    elif msg == "영화":
+        movie = ["신과 함께2", "인랑", "마녀", "맘마미아2"]
+        return_msg = random.choice(movie)
+    else:
+        return_msg = "안됩니다."
+        
     json_return = {
         "message" : {
-            "text" : msg
+            "text" : return_msg
         },
         "keyboard" : {
             "type" : "buttons",
